@@ -1,0 +1,1408 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Land Record Intelligence Portal</title>
+  <style>
+    :root {
+      --portal-blue: #0b5ed7;
+      --portal-blue-dark: #084298;
+      --portal-green: #198754;
+      --portal-green-hover: #157347;
+      --portal-indigo: #4338ca;
+      --portal-amber: #d97706;
+      --portal-red: #dc2626;
+      --bg-page: #eef2f7;
+      --card-bg: #ffffff;
+      --text-main: #1e293b;
+      --text-muted: #64748b;
+      --border: #dbe3ee;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+    }
+
+    body {
+      background: var(--bg-page);
+      color: var(--text-main);
+      min-height: 100vh;
+    }
+
+    .topbar {
+      background: #ffffff;
+      border-bottom: 1px solid var(--border);
+      padding: 12px 24px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      flex-wrap: wrap;
+      box-shadow: 0 1px 4px rgba(15, 23, 42, 0.05);
+    }
+
+    .brand-box {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .brand-badge {
+      width: 44px;
+      height: 44px;
+      border-radius: 10px;
+      background: linear-gradient(135deg, var(--portal-blue), var(--portal-green));
+      color: #ffffff;
+      font-weight: 700;
+      display: grid;
+      place-items: center;
+      font-size: 16px;
+      letter-spacing: 0.5px;
+    }
+
+    .brand-title {
+      font-size: 18px;
+      font-weight: 700;
+      color: var(--portal-blue-dark);
+    }
+
+    .brand-sub {
+      font-size: 12px;
+      color: var(--text-muted);
+      margin-top: 2px;
+    }
+
+    .auth-wrapper {
+      max-width: 1140px;
+      margin: 28px auto;
+      background: var(--card-bg);
+      border-radius: 12px;
+      overflow: hidden;
+      box-shadow: 0 12px 32px rgba(15, 23, 42, 0.08);
+      display: grid;
+      grid-template-columns: 1.25fr 0.95fr;
+      min-height: 550px;
+    }
+
+    .auth-left {
+      padding: 36px;
+      background: linear-gradient(160deg, #f8fbff 0%, #eaf2ff 100%);
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      border-right: 1px solid var(--border);
+    }
+
+    .illustration-card {
+      background: #ffffff;
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 20px;
+      margin: 18px 0;
+    }
+
+    .feature-list {
+      list-style: none;
+      display: grid;
+      gap: 10px;
+      margin-top: 12px;
+    }
+
+    .feature-list li {
+      font-size: 14px;
+      color: var(--text-main);
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .dot {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background: var(--portal-green);
+      display: inline-block;
+      flex-shrink: 0;
+    }
+
+    .auth-right {
+      background: var(--portal-blue);
+      color: #ffffff;
+      padding: 32px 28px;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+    }
+
+    .auth-card-title {
+      font-size: 26px;
+      font-weight: 600;
+      margin-bottom: 18px;
+    }
+
+    .field-group {
+      margin-bottom: 13px;
+    }
+
+    .field-label {
+      display: flex;
+      justify-content: space-between;
+      font-size: 12px;
+      margin-bottom: 5px;
+      color: #e2e8f0;
+    }
+
+    .link-btn {
+      background: none;
+      border: none;
+      color: #bfdbfe;
+      font-size: 12px;
+      cursor: pointer;
+      text-decoration: underline;
+      padding: 0;
+    }
+
+    .link-btn:hover {
+      color: #ffffff;
+    }
+
+    .input-control {
+      width: 100%;
+      padding: 10px 12px;
+      border-radius: 6px;
+      border: 1px solid #cbd5e1;
+      background: #ffffff;
+      color: #0f172a;
+      font-size: 14px;
+    }
+
+    .input-control:focus {
+      outline: 2px solid #93c5fd;
+      border-color: #ffffff;
+    }
+
+    .check-row {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 13px;
+      margin: 10px 0 16px;
+      color: #e2e8f0;
+    }
+
+    .btn-green {
+      padding: 10px 16px;
+      border: none;
+      border-radius: 6px;
+      background: var(--portal-green);
+      color: #ffffff;
+      font-size: 14px;
+      font-weight: 600;
+      cursor: pointer;
+    }
+
+    .btn-green:hover:not(:disabled) {
+      background: var(--portal-green-hover);
+    }
+
+    .btn-submit {
+      padding: 10px 16px;
+      border: none;
+      border-radius: 6px;
+      background: var(--portal-indigo);
+      color: #ffffff;
+      font-size: 14px;
+      font-weight: 600;
+      cursor: pointer;
+    }
+
+    .btn-submit:hover:not(:disabled) {
+      background: #3730a3;
+    }
+
+    .btn-light {
+      padding: 8px 14px;
+      border-radius: 6px;
+      border: 1px solid var(--border);
+      background: #ffffff;
+      color: var(--text-main);
+      font-size: 13px;
+      font-weight: 600;
+      cursor: pointer;
+      text-decoration: none;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .btn-light:hover:not(:disabled) {
+      background: #f8fafc;
+    }
+
+    .btn-primary {
+      padding: 9px 16px;
+      border-radius: 6px;
+      border: none;
+      background: var(--portal-blue);
+      color: #ffffff;
+      font-size: 14px;
+      font-weight: 600;
+      cursor: pointer;
+      white-space: nowrap;
+    }
+
+    .btn-primary:hover:not(:disabled) {
+      background: var(--portal-blue-dark);
+    }
+
+    button:disabled {
+      opacity: 0.48;
+      cursor: not-allowed;
+    }
+
+    .auth-switch {
+      margin-top: 16px;
+      font-size: 13px;
+      color: #dbeafe;
+      display: flex;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 8px;
+    }
+
+    .msg-box {
+      padding: 9px 12px;
+      border-radius: 6px;
+      font-size: 13px;
+      margin-bottom: 12px;
+      display: none;
+    }
+
+    .msg-err {
+      background: #fee2e2;
+      color: #991b1b;
+      display: block;
+    }
+
+    .msg-ok {
+      background: #dcfce7;
+      color: #166534;
+      display: block;
+    }
+
+    .msg-warn {
+      background: #fef3c7;
+      color: #92400e;
+      display: block;
+    }
+
+    .dash-container {
+      max-width: 1360px;
+      margin: 20px auto;
+      padding: 0 18px;
+      display: none;
+    }
+
+    .stats-grid {
+      display: grid;
+      grid-template-columns: repeat(5, 1fr);
+      gap: 12px;
+      margin-bottom: 16px;
+    }
+
+    .stat-card {
+      background: #ffffff;
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 14px;
+    }
+
+    .stat-num {
+      font-size: 24px;
+      font-weight: 700;
+      color: var(--portal-blue-dark);
+      margin-top: 4px;
+    }
+
+    .stat-label {
+      font-size: 12px;
+      color: var(--text-muted);
+    }
+
+    .main-grid {
+      display: grid;
+      grid-template-columns: 1.25fr 1fr;
+      gap: 16px;
+    }
+
+    .right-stack {
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+    }
+
+    .panel {
+      background: #ffffff;
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 16px;
+    }
+
+    .panel-title {
+      font-size: 15px;
+      font-weight: 700;
+      margin-bottom: 10px;
+      color: var(--text-main);
+    }
+
+    .score-meter-wrap {
+      background: #f8fafc;
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 10px 12px;
+      margin-bottom: 10px;
+    }
+
+    .score-meter-top {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-size: 12px;
+      font-weight: 600;
+      margin-bottom: 6px;
+    }
+
+    .score-track {
+      width: 100%;
+      height: 8px;
+      background: #e2e8f0;
+      border-radius: 999px;
+      overflow: hidden;
+    }
+
+    .score-fill {
+      height: 100%;
+      width: 0%;
+      background: var(--portal-blue);
+      transition: width 0.25s ease, background-color 0.25s ease;
+    }
+
+    .form-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 10px;
+    }
+
+    .form-grid .full {
+      grid-column: 1 / -1;
+    }
+
+    .d-label {
+      display: block;
+      font-size: 12px;
+      color: var(--text-muted);
+      margin-bottom: 4px;
+      font-weight: 600;
+    }
+
+    .d-input,
+    .d-select,
+    .d-textarea {
+      width: 100%;
+      padding: 8px 10px;
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      font-size: 13px;
+      color: var(--text-main);
+      background: #ffffff;
+    }
+
+    .d-input:disabled,
+    .d-select:disabled {
+      background: #f1f5f9;
+      color: #475569;
+    }
+
+    .field-uncertain {
+      border-color: #f59e0b !important;
+      background: #fffbeb !important;
+    }
+
+    .alert-strip {
+      padding: 8px 11px;
+      border-radius: 6px;
+      font-size: 12px;
+      background: #fffbeb;
+      border: 1px solid #fde68a;
+      color: #92400e;
+      display: none;
+    }
+
+    .alert-strip.active {
+      display: block;
+    }
+
+    .preview-box {
+      border: 1px dashed var(--border);
+      border-radius: 8px;
+      padding: 10px;
+      background: #f8fafc;
+      min-height: 170px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      overflow: hidden;
+    }
+
+    .preview-box img {
+      max-width: 100%;
+      max-height: 250px;
+      border-radius: 6px;
+    }
+
+    .preview-box iframe {
+      width: 100%;
+      height: 250px;
+      border: none;
+      border-radius: 6px;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 8px;
+      font-size: 13px;
+    }
+
+    th,
+    td {
+      padding: 8px;
+      border-bottom: 1px solid var(--border);
+      text-align: left;
+    }
+
+    th {
+      background: #f8fafc;
+      font-weight: 700;
+      color: var(--text-muted);
+    }
+
+    tr:hover td {
+      background: #f1f5f9;
+      cursor: pointer;
+    }
+
+    tr.selected-row td {
+      background: #eff6ff;
+    }
+
+    .badge {
+      padding: 3px 8px;
+      border-radius: 999px;
+      font-size: 11px;
+      font-weight: 700;
+      display: inline-block;
+    }
+
+    .b-verified {
+      background: #dcfce7;
+      color: #166534;
+    }
+
+    .b-submitted {
+      background: #e0e7ff;
+      color: #3730a3;
+    }
+
+    .b-review {
+      background: #fef3c7;
+      color: #92400e;
+    }
+
+    .b-alert {
+      background: #fee2e2;
+      color: #991b1b;
+    }
+
+    .audit-list {
+      max-height: 150px;
+      overflow-y: auto;
+      font-size: 12px;
+      display: grid;
+      gap: 6px;
+    }
+
+    .audit-item {
+      padding: 6px 8px;
+      background: #f8fafc;
+      border: 1px solid #e2e8f0;
+      border-radius: 6px;
+    }
+
+    .footer-note {
+      text-align: center;
+      font-size: 12px;
+      color: var(--text-muted);
+      padding: 16px;
+    }
+
+    @media (max-width: 1024px) {
+      .auth-wrapper,
+      .main-grid,
+      .stats-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .auth-left {
+        border-right: none;
+        border-bottom: 1px solid var(--border);
+      }
+    }
+  </style>
+</head>
+<body>
+  <header class="topbar">
+    <div class="brand-box">
+      <div class="brand-badge">LR</div>
+      <div>
+        <div class="brand-title">Land Record Intelligence Portal</div>
+        <div class="brand-sub">Multilingual OCR • CV Preprocessing • SHA-256 &amp; Conflict Check • Dynamic Health Score • Final Submission</div>
+      </div>
+    </div>
+    <div id="userBar" style="display:none; align-items:center; gap:8px; flex-wrap:wrap;">
+      <span id="userBadge" style="font-size:13px; font-weight:600; color:#084298;"></span>
+      <a class="btn-light" href="/api/records/export.csv">Export CSV</a>
+      <button type="button" class="btn-light" onclick="logoutUser()">Logout</button>
+    </div>
+  </header>
+
+  <section id="authSection" class="auth-wrapper">
+    <div class="auth-left">
+      <div>
+        <h2 style="color:#084298; font-size:22px;">Intelligent Land Record Digitization &amp; Validation</h2>
+        <p style="color:#475569; font-size:14px; margin-top:6px;">
+          Digitize legacy land records, scanned PDFs, and regional-language documents with automated field extraction, uncertainty highlighting, duplicate/conflict detection, and officer final submission.
+        </p>
+        <div class="illustration-card">
+          <div style="font-weight:700; color:#0b5ed7; margin-bottom:6px;">Platform Capabilities</div>
+          <ul class="feature-list">
+            <li><span class="dot"></span> OpenCV Denoising &amp; Adaptive Thresholding + Tesseract OCR (Hindi &amp; English)</li>
+            <li><span class="dot"></span> Structured Extraction: Khasra, Survey, Khata, Area, Land Type, Ownership &amp; Mutation</li>
+            <li><span class="dot"></span> Dynamic Health Score (0–100) with Low-Confidence Field &amp; Conflict Alerts</li>
+            <li><span class="dot"></span> Verification Workflow, Final Submission Lock, Reopen, Delete, CSV Export &amp; Audit Trail</li>
+          </ul>
+        </div>
+      </div>
+      <div style="font-size:12px; color:#64748b;">
+        Demo Officer Login: <b>officer@landportal.local</b> (or phone <b>9876543210</b>) / Password: <b>Land@1234</b>
+      </div>
+    </div>
+
+    <div class="auth-right">
+      <div id="loginView">
+        <div class="auth-card-title">Welcome</div>
+        <div id="loginMsg" class="msg-box"></div>
+
+        <div class="field-group">
+          <div class="field-label">
+            <span>Email or Mobile Number</span>
+            <button type="button" class="link-btn" onclick="openForgotView()">Forgot User ID?</button>
+          </div>
+          <input id="loginId" class="input-control" type="text" placeholder="Enter email or 10-digit mobile" />
+        </div>
+
+        <div class="field-group">
+          <div class="field-label">
+            <span>Password</span>
+            <button type="button" class="link-btn" onclick="openForgotView()">Forgot Password?</button>
+          </div>
+          <input id="loginPass" class="input-control" type="password" placeholder="Enter your password" />
+        </div>
+
+        <label class="check-row">
+          <input id="keepSignedIn" type="checkbox" />
+          <span>Keep me Signed in</span>
+        </label>
+
+        <button type="button" class="btn-green" style="width:100%;" onclick="submitLogin()">Login</button>
+
+        <div class="auth-switch">
+          <span>New user? <button type="button" class="link-btn" onclick="openRegisterView()">Create Account</button></span>
+          <button type="button" class="link-btn" onclick="fillDemo()">Fill Demo Credentials</button>
+        </div>
+      </div>
+
+      <div id="registerView" style="display:none;">
+        <div class="auth-card-title">Create Account</div>
+        <div id="regMsg" class="msg-box"></div>
+
+        <div class="field-group">
+          <div class="field-label"><span>Full Name</span></div>
+          <input id="regName" class="input-control" type="text" placeholder="Enter your full name" />
+        </div>
+        <div class="field-group">
+          <div class="field-label"><span>Email Address</span></div>
+          <input id="regEmail" class="input-control" type="email" placeholder="name@example.com" />
+        </div>
+        <div class="field-group">
+          <div class="field-label"><span>Mobile Number (10 digits)</span></div>
+          <input id="regPhone" class="input-control" type="text" placeholder="9876543210" />
+        </div>
+        <div class="field-group">
+          <div class="field-label"><span>Role</span></div>
+          <select id="regRole" class="input-control">
+            <option value="officer">Revenue Officer</option>
+            <option value="reviewer">Verifier / Reviewer</option>
+            <option value="admin">Portal Admin</option>
+          </select>
+        </div>
+        <div class="field-group">
+          <div class="field-label"><span>Set Your Password</span></div>
+          <input id="regPass" class="input-control" type="password" placeholder="Minimum 6 characters" />
+        </div>
+
+        <button type="button" class="btn-green" style="width:100%;" onclick="submitRegister()">Register &amp; Enter Portal</button>
+
+        <div class="auth-switch">
+          <span>Already registered? <button type="button" class="link-btn" onclick="openLoginView()">Back to Login</button></span>
+        </div>
+      </div>
+
+      <div id="forgotView" style="display:none;">
+        <div class="auth-card-title">Reset Password</div>
+        <div id="forgotMsg" class="msg-box"></div>
+
+        <div class="field-group">
+          <div class="field-label"><span>Registered Email or Mobile Number</span></div>
+          <div style="display:flex; gap:8px;">
+            <input id="fpIdentifier" class="input-control" type="text" placeholder="email or mobile" />
+            <button type="button" class="btn-light" onclick="sendOtp()">Send OTP</button>
+          </div>
+        </div>
+
+        <div class="field-group">
+          <div class="field-label"><span>6-Digit OTP</span></div>
+          <div style="display:flex; gap:8px;">
+            <input id="fpOtp" class="input-control" type="text" maxlength="6" placeholder="Enter OTP" />
+            <button type="button" class="btn-light" onclick="verifyOtp()">Verify</button>
+          </div>
+        </div>
+
+        <div class="field-group">
+          <div class="field-label"><span>New Password</span></div>
+          <input id="fpNewPass" class="input-control" type="password" placeholder="Enter new password (min 6 chars)" />
+        </div>
+
+        <button type="button" class="btn-green" style="width:100%;" onclick="resetPassword()">Set New Password</button>
+
+        <div class="auth-switch">
+          <button type="button" class="link-btn" onclick="openLoginView()">Back to Login</button>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <main id="dashboardSection" class="dash-container">
+    <div class="stats-grid">
+      <div class="stat-card"><div class="stat-label">Total Scanned Records</div><div id="stTotal" class="stat-num">0</div></div>
+      <div class="stat-card"><div class="stat-label">Verified / Submitted</div><div id="stVerified" class="stat-num" style="color:#198754;">0</div></div>
+      <div class="stat-card"><div class="stat-label">Final Submitted</div><div id="stSubmitted" class="stat-num" style="color:#4338ca;">0</div></div>
+      <div class="stat-card"><div class="stat-label">Duplicates / Conflicts</div><div id="stDup" class="stat-num" style="color:#dc2626;">0</div></div>
+      <div class="stat-card"><div class="stat-label">Average Health Score</div><div id="stScore" class="stat-num">0</div></div>
+    </div>
+
+    <div class="main-grid">
+      <div class="panel">
+        <div class="panel-title">1. Document Digitization, Validation &amp; Final Submission</div>
+        <div id="dashMsg" class="msg-box"></div>
+
+        <div style="display:flex; gap:8px; align-items:center; margin-bottom:10px;">
+          <input id="docFile" type="file" accept=".png,.jpg,.jpeg,.webp,.bmp,.tif,.tiff,.pdf" class="d-input" />
+          <button type="button" class="btn-primary" onclick="uploadAndScan()">Scan OCR</button>
+        </div>
+
+        <div class="score-meter-wrap">
+          <div class="score-meter-top">
+            <span id="scoreLabel">Record Health Score: 0 / 100</span>
+            <span id="ocrConfLabel" style="color:#64748b;">OCR Confidence: 0%</span>
+          </div>
+          <div class="score-track">
+            <div id="scoreFill" class="score-fill"></div>
+          </div>
+        </div>
+
+        <div id="flagAlert" class="alert-strip" style="margin-bottom:8px;"></div>
+        <div id="uncertainAlert" class="alert-strip" style="margin-bottom:10px;"></div>
+
+        <div class="form-grid">
+          <div>
+            <label class="d-label" for="fOwner">Owner Name</label>
+            <input id="fOwner" class="d-input" type="text" />
+          </div>
+          <div>
+            <label class="d-label" for="fFather">Father / Husband Name</label>
+            <input id="fFather" class="d-input" type="text" />
+          </div>
+          <div>
+            <label class="d-label" for="fSurvey">Survey No.</label>
+            <input id="fSurvey" class="d-input" type="text" />
+          </div>
+          <div>
+            <label class="d-label" for="fKhasra">Khasra / Plot No.</label>
+            <input id="fKhasra" class="d-input" type="text" />
+          </div>
+          <div>
+            <label class="d-label" for="fAccount">Khata / Account No.</label>
+            <input id="fAccount" class="d-input" type="text" />
+          </div>
+          <div>
+            <label class="d-label" for="fVillage">Village / Mauza</label>
+            <input id="fVillage" class="d-input" type="text" />
+          </div>
+          <div>
+            <label class="d-label" for="fTehsil">Tehsil / Taluka</label>
+            <input id="fTehsil" class="d-input" type="text" />
+          </div>
+          <div>
+            <label class="d-label" for="fDistrict">District</label>
+            <input id="fDistrict" class="d-input" type="text" />
+          </div>
+          <div>
+            <label class="d-label" for="fArea">Plot Area / Rakba</label>
+            <input id="fArea" class="d-input" type="text" />
+          </div>
+          <div>
+            <label class="d-label" for="fType">Land Classification</label>
+            <input id="fType" class="d-input" type="text" />
+          </div>
+          <div>
+            <label class="d-label" for="fOwnership">Ownership Details</label>
+            <input id="fOwnership" class="d-input" type="text" />
+          </div>
+          <div>
+            <label class="d-label" for="fMutation">Mutation / Namantaran</label>
+            <input id="fMutation" class="d-input" type="text" />
+          </div>
+          <div>
+            <label class="d-label" for="fRegistration">Registration / Deed Info</label>
+            <input id="fRegistration" class="d-input" type="text" />
+          </div>
+          <div>
+            <label class="d-label" for="fStatus">Verification Status</label>
+            <select id="fStatus" class="d-select">
+              <option value="Needs Review">Needs Review</option>
+              <option value="Verified">Verified</option>
+              <option value="Duplicate Flagged">Duplicate Flagged</option>
+              <option value="Conflict Flagged">Conflict Flagged</option>
+              <option value="Final Submitted">Final Submitted</option>
+            </select>
+          </div>
+          <div class="full">
+            <label class="d-label" for="fRawText">Raw OCR Text (<span id="ocrMeta">No scan selected</span>)</label>
+            <textarea id="fRawText" rows="3" class="d-textarea" readonly></textarea>
+          </div>
+          <div class="full" style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:8px; margin-top:4px;">
+            <span id="metaInfo" style="font-size:12px; color:#64748b;">Select a record or upload a document.</span>
+            <div style="display:flex; gap:8px; flex-wrap:wrap;">
+              <button id="reopenRecBtn" type="button" class="btn-light" onclick="reopenRecord()" style="display:none;">Reopen</button>
+              <button id="delRecBtn" type="button" class="btn-light" style="color:#b91c1c; border-color:#fecaca;" onclick="deleteRecord()" disabled>Delete</button>
+              <button id="saveRecBtn" type="button" class="btn-green" onclick="saveRecord()" disabled>Save &amp; Verify</button>
+              <button id="finalSubBtn" type="button" class="btn-submit" onclick="finalSubmitRecord()" disabled>Final Submit</button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="right-stack">
+        <div class="panel">
+          <div style="display:flex; justify-content:space-between; align-items:center; gap:8px; margin-bottom:8px; flex-wrap:wrap;">
+            <div class="panel-title" style="margin:0;">2. Digitized Records Register</div>
+            <div style="display:flex; gap:6px; flex-wrap:wrap;">
+              <select id="statusFilter" class="d-select" style="width:auto;" onchange="loadRecords()">
+                <option value="ALL">All Statuses</option>
+                <option value="Needs Review">Needs Review</option>
+                <option value="Verified">Verified</option>
+                <option value="Final Submitted">Final Submitted</option>
+                <option value="Duplicate Flagged">Duplicate Flagged</option>
+                <option value="Conflict Flagged">Conflict Flagged</option>
+              </select>
+              <input id="searchBox" class="d-input" style="max-width:190px;" type="text" placeholder="Search owner, khasra, village..." oninput="loadRecords()" />
+            </div>
+          </div>
+          <div style="overflow-x:auto; max-height:240px; overflow-y:auto;">
+            <table>
+              <thead>
+                <tr>
+                  <th>ID</th>
+                  <th>Owner / File</th>
+                  <th>Khasra / Survey</th>
+                  <th>Score</th>
+                  <th>Status</th>
+                </tr>
+              </thead>
+              <tbody id="recordsBody">
+                <tr><td colspan="5" style="text-align:center; color:#64748b;">No records yet. Upload a document to scan.</td></tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+        <div class="panel">
+          <div class="panel-title">3. Source Document Preview</div>
+          <div id="previewBox" class="preview-box">
+            <span style="font-size:13px; color:#64748b;">Select a record or upload a document to preview.</span>
+          </div>
+        </div>
+
+        <div class="panel">
+          <div class="panel-title">4. Recent Audit Trail</div>
+          <div id="auditBox" class="audit-list">
+            <div class="audit-item" style="color:#64748b;">No audit events yet.</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <footer class="footer-note">
+    Decision-support prototype for intelligent land record digitization, OCR extraction, duplicate &amp; conflict detection, health scoring, and officer verification — not a legal land title certificate.
+  </footer>
+
+  <script>
+    let currentRecordId = null;
+    let cachedRecords = [];
+
+    const ALL_INPUT_IDS = [
+      "fOwner", "fFather", "fSurvey", "fKhasra", "fAccount", "fVillage", "fTehsil",
+      "fDistrict", "fArea", "fType", "fOwnership", "fMutation", "fRegistration"
+    ];
+
+    function escapeHtml(str) {
+      return String(str || "").replace(/[&<>"']/g, function (s) {
+        const map = { "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" };
+        return map[s] || s;
+      });
+    }
+
+    async function safeJsonFetch(url, options) {
+      const res = await fetch(url, options);
+      let data = {};
+      try {
+        data = await res.json();
+      } catch (_) {
+        data = { ok: false, error: `Server returned status ${res.status}` };
+      }
+      return { status: res.status, data };
+    }
+
+    function showMsg(elId, text, type) {
+      const el = document.getElementById(elId);
+      if (!el) return;
+      el.textContent = text;
+      const cls = (type === true || type === "ok") ? "msg-ok" : (type === "warn" ? "msg-warn" : "msg-err");
+      el.className = "msg-box " + cls;
+    }
+
+    function clearMsg(elId) {
+      const el = document.getElementById(elId);
+      if (!el) return;
+      el.textContent = "";
+      el.className = "msg-box";
+    }
+
+    function openLoginView() {
+      ["loginView", "registerView", "forgotView"].forEach(function (id) {
+        document.getElementById(id).style.display = "none";
+      });
+      document.getElementById("loginView").style.display = "block";
+      clearMsg("loginMsg");
+    }
+
+    function openRegisterView() {
+      ["loginView", "registerView", "forgotView"].forEach(function (id) {
+        document.getElementById(id).style.display = "none";
+      });
+      document.getElementById("registerView").style.display = "block";
+      clearMsg("regMsg");
+    }
+
+    function openForgotView() {
+      ["loginView", "registerView", "forgotView"].forEach(function (id) {
+        document.getElementById(id).style.display = "none";
+      });
+      document.getElementById("forgotView").style.display = "block";
+      clearMsg("forgotMsg");
+    }
+
+    function fillDemo() {
+      document.getElementById("loginId").value = "officer@landportal.local";
+      document.getElementById("loginPass").value = "Land@1234";
+      clearMsg("loginMsg");
+    }
+
+    async function submitLogin() {
+      clearMsg("loginMsg");
+      const identifier = document.getElementById("loginId").value.trim();
+      const password = document.getElementById("loginPass").value;
+      const keep_signed_in = document.getElementById("keepSignedIn").checked;
+
+      const { data } = await safeJsonFetch("/api/auth/login", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ identifier: identifier, password: password, keep_signed_in: keep_signed_in })
+      });
+
+      if (!data.ok) {
+        showMsg("loginMsg", data.error || "Login failed", "err");
+        return;
+      }
+      enterDashboard(data.user);
+    }
+
+    async function submitRegister() {
+      clearMsg("regMsg");
+      const full_name = document.getElementById("regName").value.trim();
+      const email = document.getElementById("regEmail").value.trim();
+      const phone = document.getElementById("regPhone").value.trim();
+      const role = document.getElementById("regRole").value;
+      const password = document.getElementById("regPass").value;
+
+      const { data } = await safeJsonFetch("/api/auth/register", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          full_name: full_name,
+          email: email,
+          phone: phone,
+          role: role,
+          password: password
+        })
+      });
+
+      if (!data.ok) {
+        showMsg("regMsg", data.error || "Registration failed", "err");
+        return;
+      }
+      enterDashboard(data.user);
+    }
+
+    async function sendOtp() {
+      clearMsg("forgotMsg");
+      const identifier = document.getElementById("fpIdentifier").value.trim();
+      const { data } = await safeJsonFetch("/api/auth/forgot-password", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ identifier: identifier })
+      });
+
+      if (!data.ok) {
+        showMsg("forgotMsg", data.error || "Could not send OTP", "err");
+        return;
+      }
+      document.getElementById("fpOtp").value = data.demo_otp || "";
+      showMsg("forgotMsg", `${data.message} (Demo OTP: ${data.demo_otp})`, "ok");
+    }
+
+    async function verifyOtp() {
+      clearMsg("forgotMsg");
+      const identifier = document.getElementById("fpIdentifier").value.trim();
+      const otp = document.getElementById("fpOtp").value.trim();
+      const { data } = await safeJsonFetch("/api/auth/verify-otp", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ identifier: identifier, otp: otp })
+      });
+
+      if (!data.ok) {
+        showMsg("forgotMsg", data.error || "OTP verification failed", "err");
+        return;
+      }
+      showMsg("forgotMsg", data.message, "ok");
+    }
+
+    async function resetPassword() {
+      clearMsg("forgotMsg");
+      const identifier = document.getElementById("fpIdentifier").value.trim();
+      const otp = document.getElementById("fpOtp").value.trim();
+      const new_password = document.getElementById("fpNewPass").value;
+
+      const { data } = await safeJsonFetch("/api/auth/reset-password", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ identifier: identifier, otp: otp, new_password: new_password })
+      });
+
+      if (!data.ok) {
+        showMsg("forgotMsg", data.error || "Password reset failed", "err");
+        return;
+      }
+      showMsg("forgotMsg", data.message + " Switching to login...", "ok");
+      setTimeout(function () {
+        document.getElementById("loginId").value = identifier;
+        openLoginView();
+      }, 1000);
+    }
+
+    async function logoutUser() {
+      await safeJsonFetch("/api/auth/logout", { method: "POST" });
+      currentRecordId = null;
+      document.getElementById("dashboardSection").style.display = "none";
+      document.getElementById("userBar").style.display = "none";
+      document.getElementById("authSection").style.display = "grid";
+      openLoginView();
+    }
+
+    function enterDashboard(user) {
+      document.getElementById("authSection").style.display = "none";
+      document.getElementById("dashboardSection").style.display = "block";
+      document.getElementById("userBar").style.display = "flex";
+      const roleText = String((user && user.role) || "officer").toUpperCase();
+      const nameText = (user && user.full_name) || "Officer";
+      document.getElementById("userBadge").textContent = `${nameText} (${roleText})`;
+      loadRecords();
+    }
+
+    function updateScoreMeter(score, conf) {
+      const safeScore = Math.max(0, Math.min(100, Number(score) || 0));
+      const safeConf = Number(conf) || 0;
+      const fill = document.getElementById("scoreFill");
+      document.getElementById("scoreLabel").textContent = `Record Health Score: ${safeScore} / 100`;
+      document.getElementById("ocrConfLabel").textContent = `OCR Confidence: ${safeConf}%`;
+      fill.style.width = `${safeScore}%`;
+
+      if (safeScore >= 75) {
+        fill.style.backgroundColor = "#198754";
+      } else if (safeScore >= 45) {
+        fill.style.backgroundColor = "#d97706";
+      } else {
+        fill.style.backgroundColor = "#dc2626";
+      }
+    }
+
+    function renderAudit(logs) {
+      const box = document.getElementById("auditBox");
+      if (!logs || !logs.length) {
+        box.innerHTML = `<div class="audit-item" style="color:#64748b;">No audit events yet.</div>`;
+        return;
+      }
+      box.innerHTML = logs.map(function (l) {
+        return `
+          <div class="audit-item">
+            <b>${escapeHtml(l.action)}</b> • <span style="color:#64748b;">${escapeHtml(l.user_email || "")}</span><br>
+            <span>${escapeHtml(l.details || "")}</span>
+          </div>
+        `;
+      }).join("");
+    }
+
+    function renderPreview(record) {
+      const box = document.getElementById("previewBox");
+      if (!record || !record.stored_filename) {
+        box.innerHTML = `<span style="font-size:13px; color:#64748b;">Select a record or upload a document to preview.</span>`;
+        return;
+      }
+      const url = `/uploads/${encodeURIComponent(record.stored_filename)}`;
+      const ftype = String(record.file_type || "").toUpperCase();
+      if (ftype === "PDF") {
+        box.innerHTML = `<iframe src="${url}"></iframe>`;
+      } else {
+        box.innerHTML = `<img src="${url}" alt="Document Preview" />`;
+      }
+    }
+
+    function highlightUncertain(uncertainStr) {
+      const lower = String(uncertainStr || "").toLowerCase();
+      const map = [
+        ["fOwner", "owner"],
+        ["fFather", "father"],
+        ["fSurvey", "survey"],
+        ["fKhasra", "khasra"],
+        ["fAccount", "khata"],
+        ["fVillage", "village"],
+        ["fTehsil", "tehsil"],
+        ["fDistrict", "district"],
+        ["fArea", "area"],
+        ["fType", "classification"],
+        ["fOwnership", "ownership"],
+        ["fMutation", "mutation"],
+        ["fRegistration", "registration"]
+      ];
+      map.forEach(function (pair) {
+        const el = document.getElementById(pair[0]);
+        if (!el) return;
+        if (lower.includes(pair[1])) {
+          el.classList.add("field-uncertain");
+        } else {
+          el.classList.remove("field-uncertain");
+        }
+      });
+    }
+
+    function setFormLocked(isLocked) {
+      ALL_INPUT_IDS.forEach(function (id) {
+        const el = document.getElementById(id);
+        if (el) el.disabled = Boolean(isLocked);
+      });
+      document.getElementById("fStatus").disabled = Boolean(isLocked);
+      document.getElementById("saveRecBtn").disabled = Boolean(isLocked) || !currentRecordId;
+      document.getElementById("finalSubBtn").disabled = Boolean(isLocked) || !currentRecordId;
+      document.getElementById("delRecBtn").disabled = !currentRecordId;
+      document.getElementById("reopenRecBtn").style.display = (isLocked && currentRecordId) ? "inline-flex" : "none";
+    }
+
+    async function loadRecords() {
+      const q = encodeURIComponent(document.getElementById("searchBox").value.trim());
+      const status = encodeURIComponent(document.getElementById("statusFilter").value);
+      const { status: httpStatus, data } = await safeJsonFetch(`/api/records?q=${q}&status=${status}`);
+      if (httpStatus === 401 || !data.ok) return;
+
+      cachedRecords = data.records || [];
+      document.getElementById("stTotal").textContent = data.stats.total;
+      document.getElementById("stVerified").textContent = data.stats.verified;
+      document.getElementById("stSubmitted").textContent = data.stats.submitted;
+      document.getElementById("stDup").textContent = data.stats.duplicates;
+      document.getElementById("stScore").textContent = data.stats.avg_score;
+      renderAudit(data.audit_logs || []);
+
+      const tbody = document.getElementById("recordsBody");
+      if (!cachedRecords.length) {
+        tbody.innerHTML = `<tr><td colspan="5" style="text-align:center; color:#64748b;">No matching records found.</td></tr>`;
+        return;
+      }
+
+      tbody.innerHTML = cachedRecords.map(function (r) {
+        let badgeClass = "b-review";
+        if (r.status === "Final Submitted") badgeClass = "b-submitted";
+        else if (r.status === "Verified") badgeClass = "b-verified";
+        else if (r.duplicate_of_id || r.conflict_with_id || String(r.status).includes("Flagged")) badgeClass = "b-alert";
+
+        const label = r.owner_name || r.original_filename;
+        const parcel = r.khasra_number || r.survey_number || "-";
+        const selectedCls = r.id === currentRecordId ? "selected-row" : "";
+        return `
+          <tr class="${selectedCls}" onclick="selectRecord(${r.id})">
+            <td>#${r.id}</td>
+            <td><b>${escapeHtml(label)}</b><br><span style="font-size:11px; color:#64748b;">${escapeHtml(r.original_filename)}</span></td>
+            <td>${escapeHtml(parcel)}</td>
+            <td><b>${r.health_score}</b>/100</td>
+            <td><span class="badge ${badgeClass}">${escapeHtml(r.status)}</span></td>
+          </tr>
+        `;
+      }).join("");
+    }
+
+    function selectRecord(id) {
+      const r = cachedRecords.find(function (x) { return x.id === id; });
+      if (!r) return;
+      currentRecordId = r.id;
+
+      document.getElementById("fOwner").value = r.owner_name || "";
+      document.getElementById("fFather").value = r.father_name || "";
+      document.getElementById("fSurvey").value = r.survey_number || "";
+      document.getElementById("fKhasra").value = r.khasra_number || "";
+      document.getElementById("fAccount").value = r.account_number || "";
+      document.getElementById("fVillage").value = r.village_name || "";
+      document.getElementById("fTehsil").value = r.tehsil || "";
+      document.getElementById("fDistrict").value = r.district || "";
+      document.getElementById("fArea").value = r.land_area || "";
+      document.getElementById("fType").value = r.land_type || "";
+      document.getElementById("fOwnership").value = r.ownership_details || "";
+      document.getElementById("fMutation").value = r.mutation_details || "";
+      document.getElementById("fRegistration").value = r.registration_details || "";
+      document.getElementById("fStatus").value = r.status || "Needs Review";
+      document.getElementById("fRawText").value = r.raw_ocr_text || "";
+      document.getElementById("ocrMeta").textContent = `OCR Confidence: ${r.ocr_confidence}% • Health Score: ${r.health_score}/100`;
+
+      updateScoreMeter(r.health_score, r.ocr_confidence);
+
+      const subInfo = r.submitted_at ? ` • Submitted by ${r.submitted_by || "officer"}` : "";
+      document.getElementById("metaInfo").textContent = `Record #${r.id} • SHA-256: ${String(r.sha256_hash || "").slice(0, 14)}...${subInfo}`;
+
+      const flagEl = document.getElementById("flagAlert");
+      const flags = [];
+      if (r.duplicate_of_id) flags.push(`Duplicate of Record #${r.duplicate_of_id} (matching SHA-256 hash)`);
+      if (r.conflict_with_id) flags.push(`Parcel/Owner conflict detected with Record #${r.conflict_with_id}`);
+      if (flags.length) {
+        flagEl.textContent = "Integrity Alert: " + flags.join(" | ");
+        flagEl.classList.add("active");
+      } else {
+        flagEl.textContent = "";
+        flagEl.classList.remove("active");
+      }
+
+      const uncEl = document.getElementById("uncertainAlert");
+      if (r.uncertain_fields) {
+        uncEl.textContent = "Review Needed / Missing or Low-Confidence Fields: " + r.uncertain_fields;
+        uncEl.classList.add("active");
+      } else {
+        uncEl.textContent = "";
+        uncEl.classList.remove("active");
+      }
+
+      highlightUncertain(r.uncertain_fields || "");
+      renderPreview(r);
+      setFormLocked(r.status === "Final Submitted");
+      loadRecords();
+    }
+
+    function collectPayload() {
+      return {
+        owner_name: document.getElementById("fOwner").value,
+        father_name: document.getElementById("fFather").value,
+        survey_number: document.getElementById("fSurvey").value,
+        khasra_number: document.getElementById("fKhasra").value,
+        account_number: document.getElementById("fAccount").value,
+        village_name: document.getElementById("fVillage").value,
+        tehsil: document.getElementById("fTehsil").value,
+        district: document.getElementById("fDistrict").value,
+        land_area: document.getElementById("fArea").value,
+        land_type: document.getElementById("fType").value,
+        ownership_details: document.getElementById("fOwnership").value,
+        mutation_details: document.getElementById("fMutation").value,
+        registration_details: document.getElementById("fRegistration").value,
+        status: document.getElementById("fStatus").value
+      };
+    }
+
+    async function uploadAndScan() {
+      clearMsg("dashMsg");
+      const fileInput = document.getElementById("docFile");
+      if (!fileInput.files || !fileInput.files.length) {
+        showMsg("dashMsg", "Please choose an image or PDF document first.", "err");
+        return;
+      }
+
+      const fd = new FormData();
+      fd.append("document", fileInput.files[0]);
+
+      showMsg("dashMsg", "Scanning document with OpenCV preprocessing + Tesseract OCR...", "ok");
+      const { data } = await safeJsonFetch("/api/records/upload", { method: "POST", body: fd });
+      if (!data.ok) {
+        showMsg("dashMsg", data.error || "OCR scan failed", "err");
+        return;
+      }
+
+      currentRecordId = data.record.id;
+      await loadRecords();
+      selectRecord(data.record.id);
+
+      const alerts = [];
+      if (data.record.duplicate_of_id) alerts.push(`Duplicate of #${data.record.duplicate_of_id}`);
+      if (data.record.conflict_with_id) alerts.push(`Conflict with #${data.record.conflict_with_id}`);
+      const suffix = alerts.length ? ` (${alerts.join(", ")})` : "";
+      showMsg(
+        "dashMsg",
+        `Scan complete! Health Score: ${data.record.health_score}/100 • Status: ${data.record.status}${suffix}`,
+        alerts.length ? "warn" : "ok"
+      );
+    }
+
+    async function saveRecord() {
+      if (!currentRecordId) return;
+      clearMsg("dashMsg");
+      const { data } = await safeJsonFetch(`/api/records/${currentRecordId}`, {
+        method: "PUT",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(collectPayload())
+      });
+      if (!data.ok) {
+        showMsg("dashMsg", data.error || "Could not update record", "err");
+        return;
+      }
+
+      currentRecordId = data.record.id;
+      await loadRecords();
+      selectRecord(data.record.id);
+      showMsg("dashMsg", `Record #${data.record.id} saved! Updated Health Score: ${data.record.health_score}/100`, "ok");
+    }
+
+    async function finalSubmitRecord() {
+      if (!currentRecordId) return;
+      clearMsg("dashMsg");
+      if (!confirm(`Confirm Final Submission for Record #${currentRecordId}? This will lock the record as Final Submitted.`)) {
+        return;
+      }
+
+      const { data } = await safeJsonFetch(`/api/records/${currentRecordId}/final-submit`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(collectPayload())
+      });
+      if (!data.ok) {
+        showMsg("dashMsg", data.error || "Final submission failed", "err");
+        return;
+      }
+
+      currentRecordId = data.record.id;
+      await loadRecords();
+      selectRecord(data.record.id);
+      showMsg("dashMsg", data.message || `Record #${data.record.id} Final Submitted!`, "ok");
+    }
+
+    async function reopenRecord() {
+      if (!currentRecordId) return;
+      clearMsg("dashMsg");
+      const payload = collectPayload();
+      payload.status = "Verified";
+      payload.allow_reopen = true;
+
+      const { data } = await safeJsonFetch(`/api/records/${currentRecordId}`, {
+        method: "PUT",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(payload)
+      });
+      if (!data.ok) {
+        showMsg("dashMsg", data.error || "Could not reopen record", "err");
+        return;
+      }
+
+      await loadRecords();
+      selectRecord(data.record.id);
+      showMsg("dashMsg", `Record #${data.record.id} reopened for editing.`, "warn");
+    }
+
+    async function deleteRecord() {
+      if (!currentRecordId) return;
+      clearMsg("dashMsg");
+      if (!confirm(`Are you sure you want to delete Record #${currentRecordId}?`)) return;
+
+      const idToDelete = currentRecordId;
+      const { data } = await safeJsonFetch(`/api/records/${idToDelete}`, { method: "DELETE" });
+      if (!data.ok) {
+        showMsg("dashMsg", data.error || "Could not delete record", "err");
+        return;
+      }
+
+      currentRecordId = null;
+      ALL_INPUT_IDS.concat(["fRawText"]).forEach(function (id) {
+        const el = document.getElementById(id);
+        el.value = "";
+        el.classList.remove("field-uncertain");
+      });
+      document.getElementById("fStatus").value = "Needs Review";
+      document.getElementById("ocrMeta").textContent = "No scan selected";
+      document.getElementById("metaInfo").textContent = "Select a record or upload a document.";
+      document.getElementById("flagAlert").classList.remove("active");
+      document.getElementById("uncertainAlert").classList.remove("active");
+      updateScoreMeter(0, 0);
+      setFormLocked(false);
+      renderPreview(null);
+
+      await loadRecords();
+      showMsg("dashMsg", data.message || `Record #${idToDelete} deleted.`, "ok");
+    }
+
+    (async function initSession() {
+      const { data } = await safeJsonFetch("/api/me");
+      if (data && data.authenticated && data.user) {
+        enterDashboard(data.user);
+      }
+    })();
+  </script>
+</body>
+</html>
